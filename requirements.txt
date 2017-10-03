@@ -1,4 +1,3 @@
-Pillow
 Scrapy>=1.3.2
 Twisted==16.6.0
 beautifulsoup4>=4.5.3
