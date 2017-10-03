@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import scrapy
-import boto3
+from boto.s3.key import Key
+from boto.s3.connection import S3Connection
 from bs4 import BeautifulSoup
 from scrapy.http import Request
+from scrapy.conf import settings
 
 class RecoomeLaserGunSpider(scrapy.Spider):
     name = 'recoome-laser-gun'
@@ -25,9 +27,13 @@ class RecoomeLaserGunSpider(scrapy.Spider):
                 )
 
     def upload_pdf(self, response):
-        s3_client = boto3.client('s3')
+        conn = S3Connection(settings['AWS_ACCESS_KEY_ID'], settings['AWS_SECRET_ACCESS_KEY'])
+        bucket = conn.get_bucket('tirashi')
+        k = Key(bucket)
+        #s3_client = boto3.client('s3')
         print("Saving PDF " + response.url)
         path = response.url.split('/')[-1]
         with open(path, 'wb') as f:
             f.write(response.body)
-        s3_client.upload_file(path, 'tirashi', path)
+        # s3_client.upload_file(path, 'tirashi', path)
+        k.set_contents_from_filename(path)

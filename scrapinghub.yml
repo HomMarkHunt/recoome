@@ -1,2 +1,4 @@
-image: hommarkhunt/recoome
-project: 242236
+project: 242250
+requirements:
+  file: ./requirements.txt
+stack: scrapy:1.4-py3
