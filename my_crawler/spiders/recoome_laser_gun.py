@@ -36,4 +36,4 @@ class RecoomeLaserGunSpider(scrapy.Spider):
         with open(path, 'wb') as f:
             f.write(response.body)
         # s3_client.upload_file(path, 'tirashi', path)
-        k.set_contents_from_filename(path)
+        k.set_contents_from_filename(path + ".pdf")
