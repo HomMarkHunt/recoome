@@ -29,11 +29,11 @@ class RecoomeLaserGunSpider(scrapy.Spider):
     def upload_pdf(self, response):
         conn = S3Connection(settings['AWS_ACCESS_KEY_ID'], settings['AWS_SECRET_ACCESS_KEY'])
         bucket = conn.get_bucket('tirashi')
-        k = Key(bucket)
-        #s3_client = boto3.client('s3')
         print("Saving PDF " + response.url)
+        k = Key(bucket)
         path = response.url.split('/')[-1]
+        k.key = path
         with open(path, 'wb') as f:
             f.write(response.body)
-        # s3_client.upload_file(path, 'tirashi', path)
-        k.set_contents_from_filename(path + ".pdf")
+        k.set_contents_from_filename(path)
+        k.make_public()
